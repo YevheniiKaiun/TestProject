@@ -1,0 +1,25 @@
+.characters-list{
+  width: 100%;
+  color: #FFF;
+
+  &__group {
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #888;
+    background-color: #303030;
+    border-bottom: none;
+  }
+}
+
+.characters-list__group:hover {
+  background-color: #b5b5b5;
+}
+.characters-list__group:last-child {
+  border-bottom: 1px solid #888;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.characters-list__group:first-child {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}

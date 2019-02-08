@@ -1,0 +1,43 @@
+@import '../../../common/styles/grid.scss';
+@import '../../../common/styles/base.scss';
+@import '../../../common/styles/mixins.scss';
+@import '../../../common/styles/variables.scss';
+
+.random-planet-wrapper {
+  display: flex;
+  padding: 16px;
+  background-color: #303030;
+  border-radius: 10px;
+  margin: 16px;
+  color: #FFF;
+}
+
+.random-planet {
+  display: flex;
+}
+
+.planet-image  {
+  width: 150px;
+  height: 150px;
+  margin-right: 16px;
+  border-radius: 10px;
+  @include mobile {
+    width: 125px;
+    height: 125px;
+  }
+}
+
+.planet-list {
+  margin: 1rem 0 0 1rem;
+  &__item {
+    display: flex;
+    border-top: 1px solid #888;
+    padding: 10px 0;
+
+  }
+}
+
+.term {
+  padding-right: 17px;
+}
+

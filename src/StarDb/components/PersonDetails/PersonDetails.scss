@@ -1,0 +1,27 @@
+.person-card-wrapper {
+  display: flex;
+  color: #FFF;
+  background-color: #303030;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.person-image {
+  width: 30%;
+  height: 30%;
+  border-radius: 15px;
+  margin-right: 16px;
+}
+
+.person-specifications {
+  margin: 1rem 0 0 1rem;
+  &__list {
+    display: flex;
+    border-top: 1px solid #888;
+    padding: 10px 0;
+  }
+}
+
+.card-body {
+  width: 100%;
+}

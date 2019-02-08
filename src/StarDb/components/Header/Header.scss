@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  flex: 10;
+  padding: 16px 32px;
+  &__title  {
+    flex: 2;
+  }
+  &__title a {
+    color: #FFF;
+  }
+  &__title a:hover {
+    color: #00bc8c;
+  }
+  &__components {
+    display: flex;
+    flex: 8;
+    justify-content: space-evenly;
+
+
+  }
+  &__list a {
+    color: #00bc8c;
+    padding: 10px;
+  }
+  &__list :hover {
+    background-color: #444444;
+    border-radius: 15px;
+  }
+}

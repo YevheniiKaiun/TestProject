@@ -1,0 +1,30 @@
+.Todo-list-button {
+  display: flex;
+  &__success {
+    border: 1px solid #00a10c;
+    background-color: #FFF;
+    color: #00a10c;
+  }
+  &__success:hover {
+    background-color: #00a10c;
+    color: #FFF;
+  }
+  &__danger {
+    border: 1px solid #ff0000;
+    background-color: #FFF;
+    color: #ff0000;
+  }
+  &__danger:hover{
+    background-color: #ff0000;
+    color: #FFF;
+  }
+  &__btn {
+    border-radius: 20%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+  }
+}
