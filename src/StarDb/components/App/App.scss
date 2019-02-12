@@ -28,7 +28,28 @@ body{
   flex: 50%;
   padding: 16px;
   height: 100%;
+  @include mobile {
+    padding: 10px;
+  }
 }
 .person-card {
   padding: 16px;
+  flex: 50%;
+  @include mobile {
+    padding: 10px;
+  }
+}
+
+.toggle-planet {
+  width: 150px;
+  height: 40px;
+  margin: 16px;
+  background-color: #ff9100;
+  color: #FFF;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  @include mobile {
+    margin: 10px;
+  }
 }

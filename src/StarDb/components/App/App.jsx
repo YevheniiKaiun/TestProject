@@ -8,18 +8,49 @@ import { RandomPlanet } from "../RandomPlanet/RandomPlanet.jsx";
 import { StarshipDetails } from "../StarshipDetails/StarshipDetails.jsx";
 
 export class App extends React.Component{
+    constructor() {
+        super();
+        this.state = {
+            showRandomPlanet: true,
+            selectedPerson: 1
+        };
+    }
+
+    toggleRandomPlanet() {
+        this.setState((state) => {
+            return {
+                showRandomPlanet: !state.showRandomPlanet
+            }
+        });
+    };
+
+    onPersonSelected(id) {
+        this.setState({
+            selectedPerson: id
+        });
+    }
+
     render() {
+
+        const planet = this.state.showRandomPlanet ? <RandomPlanet/> : null;
+
         return (
             <div className='Stardb-wrapper'>
                 <Header />
-                <RandomPlanet />
+                { planet }
+
+                <button
+                    className='toggle-planet btn'
+                    onClick={this.toggleRandomPlanet.bind(this)}>
+                    Toggle Random Planet
+                </button>
 
                 <div className='person-content'>
                     <div className='characters'>
-                        <ItemList />
+                        <ItemList onItemSelected={this.onPersonSelected.bind(this)}/>
                     </div>
                     <div className='person-card'>
-                        <PersonDetails />
+                        <PersonDetails personId={this.state.selectedPerson}/>
                     </div>
                 </div>
             </div>

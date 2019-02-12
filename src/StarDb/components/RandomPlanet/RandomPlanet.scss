@@ -10,6 +10,9 @@
   border-radius: 10px;
   margin: 16px;
   color: #FFF;
+  @include mobile {
+    margin: 10px;
+  }
 }
 
 .random-planet {
@@ -29,15 +32,19 @@
 
 .planet-list {
   margin: 1rem 0 0 1rem;
+  @include mobile {
+    margin: 1rem 0 0 0;
+  }
   &__item {
     display: flex;
     border-top: 1px solid #888;
     padding: 10px 0;
 
   }
+  &__item-info {
+    padding-right: 17px;
+    @include mobile {
+      padding-right: 3px;
+    }
+  }
 }
-
-.term {
-  padding-right: 17px;
-}
-

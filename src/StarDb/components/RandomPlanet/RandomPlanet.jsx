@@ -17,46 +17,32 @@ export class RandomPlanet extends React.Component{
         };
 
         this.swapiService = new SwapiService();
-        this.updatePlanet();
-        // this.onPlanetLoaded = (planet) => {
-        //     this.setState({
-        //         planet,
-        //         loading: false,
-        //         error: false
-        //     });
-        // };
 
+        this.updatePlanet =  () => {
+            const id = Math.floor(Math.random()*25) + 3;
+            this.swapiService
+                .getPlanet(id)
+                .then((planet) => {
+                    this.setState({
+                        id,
+                        name: planet.name,
+                        population: planet.population,
+                        rotationPeriod: planet.rotationPeriod,
+                        diameter: planet.diameter,
+                        loading:false,
+                    })
+                })
 
-        this.onError = (err) => {
-            this.setState({
-                error: true,
-                loading: false
-            });
         };
+    }
 
+    componentDidMount() {
+        this.updatePlanet();
+        this.interval = setInterval(this.updatePlanet, 10000);
+        // clearInterval(this.interval);
     }
 
 
-
-    updatePlanet() {
-        const id = Math.floor(Math.random()*17) + 2;
-        // const id = 12;
-        this.swapiService
-            .getPlanet(id)
-            .then((planet) => {
-                this.setState({
-                    id,
-                    name: planet.name,
-                    population: planet.population,
-                    rotationPeriod: planet.rotationPeriod,
-                    diameter: planet.diameter,
-                    loading:false,
-                    error: false
-                })
-            })
-            .catch(this.onError);
-
-    };
 
     render() {
 
@@ -89,15 +75,15 @@ const PlanetView = ({ planet }) => {
                     <div>{name}</div>
                     <ul className="planet-list">
                         <li className="planet-list__item">
-                            <div className="term">Population:</div>
+                            <div className="planet-list__item-info">Population:</div>
                             <div>{population}</div>
                         </li>
                         <li className="planet-list__item">
-                            <div className="term">Rotation Period:</div>
+                            <div className="planet-list__item-info">Rotation Period:</div>
                             <div>{rotationPeriod}</div>
                         </li>
                         <li className="planet-list__item">
-                            <div className="term">Diameter:</div>
+                            <div className="planet-list__item-info">Diameter:</div>
                             <div>{diameter}</div>
                         </li>
                     </ul>

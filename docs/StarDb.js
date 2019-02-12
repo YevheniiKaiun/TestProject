@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 147);
+/******/ 	return __webpack_require__(__webpack_require__.s = 149);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -22016,872 +22016,17 @@ $export($export.S, 'Object', { create: __webpack_require__(37) });
 
 "use strict";
 
-// 25.4.1.5 NewPromiseCapability(C)
-var aFunction = __webpack_require__(40);
-
-function PromiseCapability(C) {
-  var resolve, reject;
-  this.promise = new C(function ($$resolve, $$reject) {
-    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-    resolve = $$resolve;
-    reject = $$reject;
-  });
-  this.resolve = aFunction(resolve);
-  this.reject = aFunction(reject);
-}
-
-module.exports.f = function (C) {
-  return new PromiseCapability(C);
-};
-
-
-/***/ }),
-/* 111 */,
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-var anObject = __webpack_require__(7);
-var aFunction = __webpack_require__(40);
-var SPECIES = __webpack_require__(0)('species');
-module.exports = function (O, D) {
-  var C = anObject(O).constructor;
-  var S;
-  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
-};
-
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var ctx = __webpack_require__(25);
-var invoke = __webpack_require__(171);
-var html = __webpack_require__(60);
-var cel = __webpack_require__(41);
-var global = __webpack_require__(1);
-var process = global.process;
-var setTask = global.setImmediate;
-var clearTask = global.clearImmediate;
-var MessageChannel = global.MessageChannel;
-var Dispatch = global.Dispatch;
-var counter = 0;
-var queue = {};
-var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer, channel, port;
-var run = function () {
-  var id = +this;
-  // eslint-disable-next-line no-prototype-builtins
-  if (queue.hasOwnProperty(id)) {
-    var fn = queue[id];
-    delete queue[id];
-    fn();
-  }
-};
-var listener = function (event) {
-  run.call(event.data);
-};
-// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-if (!setTask || !clearTask) {
-  setTask = function setImmediate(fn) {
-    var args = [];
-    var i = 1;
-    while (arguments.length > i) args.push(arguments[i++]);
-    queue[++counter] = function () {
-      // eslint-disable-next-line no-new-func
-      invoke(typeof fn == 'function' ? fn : Function(fn), args);
-    };
-    defer(counter);
-    return counter;
-  };
-  clearTask = function clearImmediate(id) {
-    delete queue[id];
-  };
-  // Node.js 0.8-
-  if (__webpack_require__(26)(process) == 'process') {
-    defer = function (id) {
-      process.nextTick(ctx(run, id, 1));
-    };
-  // Sphere (JS game engine) Dispatch API
-  } else if (Dispatch && Dispatch.now) {
-    defer = function (id) {
-      Dispatch.now(ctx(run, id, 1));
-    };
-  // Browsers with MessageChannel, includes WebWorkers
-  } else if (MessageChannel) {
-    channel = new MessageChannel();
-    port = channel.port2;
-    channel.port1.onmessage = listener;
-    defer = ctx(port.postMessage, port, 1);
-  // Browsers with postMessage, skip WebWorkers
-  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
-    defer = function (id) {
-      global.postMessage(id + '', '*');
-    };
-    global.addEventListener('message', listener, false);
-  // IE8-
-  } else if (ONREADYSTATECHANGE in cel('script')) {
-    defer = function (id) {
-      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
-        html.removeChild(this);
-        run.call(id);
-      };
-    };
-  // Rest old browsers
-  } else {
-    defer = function (id) {
-      setTimeout(ctx(run, id, 1), 0);
-    };
-  }
-}
-module.exports = {
-  set: setTask,
-  clear: clearTask
-};
-
-
-/***/ }),
-/* 114 */
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return { e: false, v: exec() };
-  } catch (e) {
-    return { e: true, v: e };
-  }
-};
-
-
-/***/ }),
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__(7);
-var isObject = __webpack_require__(9);
-var newPromiseCapability = __webpack_require__(110);
-
-module.exports = function (C, x) {
-  anObject(C);
-  if (isObject(x) && x.constructor === C) return x;
-  var promiseCapability = newPromiseCapability.f(C);
-  var resolve = promiseCapability.resolve;
-  resolve(x);
-  return promiseCapability.promise;
-};
-
-
-/***/ }),
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(148);
-
-
-/***/ }),
-/* 148 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(149);
-
-__webpack_require__(181);
-
-/***/ }),
-/* 149 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _react = __webpack_require__(3);
-
-var React = _interopRequireWildcard(_react);
-
-var _reactDom = __webpack_require__(67);
-
-var _App = __webpack_require__(150);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-(0, _reactDom.render)(React.createElement(_App.App, null), document.querySelector('#StarDb'));
-
-/***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.App = undefined;
-
-var _classCallCheck2 = __webpack_require__(11);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(12);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(13);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(14);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(3);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(151);
-
-var _Header = __webpack_require__(152);
-
-var _ItemList = __webpack_require__(154);
-
-var _PersonDetails = __webpack_require__(156);
-
-var _PlanetDetails = __webpack_require__(158);
-
-var _RandomPlanet = __webpack_require__(159);
-
-var _StarshipDetails = __webpack_require__(180);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var App = exports.App = function (_React$Component) {
-    (0, _inherits3.default)(App, _React$Component);
-
-    function App() {
-        (0, _classCallCheck3.default)(this, App);
-        return (0, _possibleConstructorReturn3.default)(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-    }
-
-    (0, _createClass3.default)(App, [{
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                { className: 'Stardb-wrapper' },
-                React.createElement(_Header.Header, null),
-                React.createElement(_RandomPlanet.RandomPlanet, null),
-                React.createElement(
-                    'div',
-                    { className: 'person-content' },
-                    React.createElement(
-                        'div',
-                        { className: 'characters' },
-                        React.createElement(_ItemList.ItemList, null)
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'person-card' },
-                        React.createElement(_PersonDetails.PersonDetails, null)
-                    )
-                )
-            );
-        }
-    }]);
-    return App;
-}(React.Component);
-
-/***/ }),
-/* 151 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 152 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Header = undefined;
-
-var _classCallCheck2 = __webpack_require__(11);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(12);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(13);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(14);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(3);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(153);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Header = exports.Header = function (_React$Component) {
-    (0, _inherits3.default)(Header, _React$Component);
-
-    function Header() {
-        (0, _classCallCheck3.default)(this, Header);
-        return (0, _possibleConstructorReturn3.default)(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-    }
-
-    (0, _createClass3.default)(Header, [{
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                { className: 'header' },
-                React.createElement(
-                    'h3',
-                    { className: 'header__title' },
-                    React.createElement(
-                        'a',
-                        { href: '#' },
-                        'Star DB'
-                    )
-                ),
-                React.createElement(
-                    'ul',
-                    { className: 'header__components' },
-                    React.createElement(
-                        'li',
-                        { className: 'header__list' },
-                        React.createElement(
-                            'a',
-                            { href: '#' },
-                            'People'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        { className: 'header__list' },
-                        React.createElement(
-                            'a',
-                            { href: '#' },
-                            'Planets'
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        { className: 'header__list' },
-                        React.createElement(
-                            'a',
-                            { href: '#' },
-                            'Starships'
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-    return Header;
-}(React.Component);
-
-/***/ }),
-/* 153 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 154 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ItemList = undefined;
-
-var _classCallCheck2 = __webpack_require__(11);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(12);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(13);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(14);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(3);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(155);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ItemList = exports.ItemList = function (_React$Component) {
-    (0, _inherits3.default)(ItemList, _React$Component);
-
-    function ItemList() {
-        (0, _classCallCheck3.default)(this, ItemList);
-        return (0, _possibleConstructorReturn3.default)(this, (ItemList.__proto__ || Object.getPrototypeOf(ItemList)).apply(this, arguments));
-    }
-
-    (0, _createClass3.default)(ItemList, [{
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'ul',
-                { className: 'characters-list' },
-                React.createElement(
-                    'li',
-                    { className: 'characters-list__group' },
-                    'Luke Skywalker'
-                ),
-                React.createElement(
-                    'li',
-                    { className: 'characters-list__group' },
-                    'Darth Vader'
-                ),
-                React.createElement(
-                    'li',
-                    { className: 'characters-list__group' },
-                    'R2-D2'
-                ),
-                React.createElement(
-                    'li',
-                    { className: 'characters-list__group' },
-                    'Owen Lars'
-                ),
-                React.createElement(
-                    'li',
-                    { className: 'characters-list__group' },
-                    'Leia Organa'
-                ),
-                React.createElement(
-                    'li',
-                    { className: 'characters-list__group' },
-                    'C-3PO'
-                )
-            );
-        }
-    }]);
-    return ItemList;
-}(React.Component);
-
-/***/ }),
-/* 155 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 156 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.PersonDetails = undefined;
-
-var _classCallCheck2 = __webpack_require__(11);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(12);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(13);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(14);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(3);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(157);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var PersonDetails = exports.PersonDetails = function (_React$Component) {
-    (0, _inherits3.default)(PersonDetails, _React$Component);
-
-    function PersonDetails() {
-        (0, _classCallCheck3.default)(this, PersonDetails);
-        return (0, _possibleConstructorReturn3.default)(this, (PersonDetails.__proto__ || Object.getPrototypeOf(PersonDetails)).apply(this, arguments));
-    }
-
-    (0, _createClass3.default)(PersonDetails, [{
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                { className: 'person-card-wrapper' },
-                React.createElement('img', { className: 'person-image',
-                    src: 'https://starwars-visualguide.com/assets/img/characters/3.jpg' }),
-                React.createElement(
-                    'div',
-                    { className: 'card-body' },
-                    React.createElement(
-                        'h4',
-                        null,
-                        'R2-D2'
-                    ),
-                    React.createElement(
-                        'ul',
-                        { className: 'person-specifications' },
-                        React.createElement(
-                            'li',
-                            { className: 'person-specifications__list' },
-                            React.createElement(
-                                'div',
-                                { className: 'term' },
-                                'Gender:'
-                            ),
-                            React.createElement(
-                                'div',
-                                null,
-                                'male'
-                            )
-                        ),
-                        React.createElement(
-                            'li',
-                            { className: 'person-specifications__list' },
-                            React.createElement(
-                                'div',
-                                { className: 'term' },
-                                'Birth Year:'
-                            ),
-                            React.createElement(
-                                'div',
-                                null,
-                                '43'
-                            )
-                        ),
-                        React.createElement(
-                            'li',
-                            { className: 'person-specifications__list' },
-                            React.createElement(
-                                'div',
-                                { className: 'term' },
-                                'Eye Color:'
-                            ),
-                            React.createElement(
-                                'div',
-                                null,
-                                'red'
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-    return PersonDetails;
-}(React.Component);
-
-/***/ }),
-/* 157 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 158 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// import * as React from 'react';
-// import './PlanetDetails.scss';
-//
-// export class PlanetDetails extends React.Component{
-//
-// }
-
-
-/***/ }),
-/* 159 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RandomPlanet = undefined;
-
-var _classCallCheck2 = __webpack_require__(11);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(12);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(13);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(14);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(3);
-
-var React = _interopRequireWildcard(_react);
-
-__webpack_require__(160);
-
-var _swapiService = __webpack_require__(161);
-
-var _spinner = __webpack_require__(178);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RandomPlanet = exports.RandomPlanet = function (_React$Component) {
-    (0, _inherits3.default)(RandomPlanet, _React$Component);
-
-    function RandomPlanet() {
-        (0, _classCallCheck3.default)(this, RandomPlanet);
-
-        var _this = (0, _possibleConstructorReturn3.default)(this, (RandomPlanet.__proto__ || Object.getPrototypeOf(RandomPlanet)).call(this));
-
-        _this.state = {
-            id: null,
-            name: null,
-            population: null,
-            rotationPeriod: null,
-            diameter: null,
-            loading: true
-        };
-
-        _this.swapiService = new _swapiService.SwapiService();
-        _this.updatePlanet();
-        // this.onPlanetLoaded = (planet) => {
-        //     this.setState({
-        //         planet,
-        //         loading: false,
-        //         error: false
-        //     });
-        // };
-
-
-        _this.onError = function (err) {
-            _this.setState({
-                error: true,
-                loading: false
-            });
-        };
-
-        return _this;
-    }
-
-    (0, _createClass3.default)(RandomPlanet, [{
-        key: 'updatePlanet',
-        value: function updatePlanet() {
-            var _this2 = this;
-
-            // const id = Math.floor(Math.random()*17) + 2;
-            var id = 12;
-            this.swapiService.getPlanet(id).then(function (planet) {
-                _this2.setState({
-                    id: id,
-                    name: planet.name,
-                    population: planet.population,
-                    rotationPeriod: planet.rotationPeriod,
-                    diameter: planet.diameter,
-                    loading: false,
-                    error: false
-                });
-            }).catch(this.onError);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var loading = this.state.loading;
-
-
-            var spinner = loading ? React.createElement(_spinner.Spinner, null) : null;
-            var content = !loading ? React.createElement(PlanetView, { planet: this.state }) : null;
-
-            return React.createElement(
-                'div',
-                { className: 'random-planet-wrapper' },
-                spinner,
-                content
-            );
-        }
-    }]);
-    return RandomPlanet;
-}(React.Component);
-
-var PlanetView = function PlanetView(_ref) {
-    var planet = _ref.planet;
-    var id = planet.id,
-        name = planet.name,
-        population = planet.population,
-        rotationPeriod = planet.rotationPeriod,
-        diameter = planet.diameter;
-
-
-    return React.createElement(
-        React.Fragment,
-        null,
-        React.createElement(
-            'div',
-            { className: 'random-planet' },
-            React.createElement('img', { className: 'planet-image',
-                src: 'https://starwars-visualguide.com/assets/img/planets/' + id + '.jpg' }),
-            React.createElement(
-                'div',
-                { className: 'planet-param' },
-                React.createElement(
-                    'div',
-                    null,
-                    name
-                ),
-                React.createElement(
-                    'ul',
-                    { className: 'planet-list' },
-                    React.createElement(
-                        'li',
-                        { className: 'planet-list__item' },
-                        React.createElement(
-                            'div',
-                            { className: 'term' },
-                            'Population:'
-                        ),
-                        React.createElement(
-                            'div',
-                            null,
-                            population
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        { className: 'planet-list__item' },
-                        React.createElement(
-                            'div',
-                            { className: 'term' },
-                            'Rotation Period:'
-                        ),
-                        React.createElement(
-                            'div',
-                            null,
-                            rotationPeriod
-                        )
-                    ),
-                    React.createElement(
-                        'li',
-                        { className: 'planet-list__item' },
-                        React.createElement(
-                            'div',
-                            { className: 'term' },
-                            'Diameter:'
-                        ),
-                        React.createElement(
-                            'div',
-                            null,
-                            diameter
-                        )
-                    )
-                )
-            )
-        )
-    );
-};
-
-/***/ }),
-/* 160 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 161 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SwapiService = undefined;
 
-var _regenerator = __webpack_require__(162);
+var _regenerator = __webpack_require__(158);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _asyncToGenerator2 = __webpack_require__(165);
+var _asyncToGenerator2 = __webpack_require__(161);
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
@@ -22918,6 +22063,43 @@ var SwapiService = exports.SwapiService = function (_React$Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (SwapiService.__proto__ || Object.getPrototypeOf(SwapiService)).call(this));
 
     _this.apiBase = 'https://swapi.co/api';
+    _this._extractId = function (item) {
+      var idRegExp = /\/([0-9]*)\/$/;
+      return item.url.match(idRegExp)[1];
+    };
+    _this._transformPlanet = function (planet) {
+      return {
+        id: _this._extractId(planet),
+        name: planet.name,
+        population: planet.population,
+        rotationPeriod: planet.rotation_period,
+        diameter: planet.diameter
+      };
+    };
+
+    _this._trnsformaStarship = function (starship) {
+      return {
+        id: _this._extractId(starship),
+        name: starship.name,
+        model: starship.model,
+        manufacturer: starship.manufacturer,
+        costInCredits: starship.cost_in_credits,
+        length: starship.length,
+        crew: starship.crew,
+        passengers: starship.passengers,
+        cargoCapacity: starship.cargo_capacity
+      };
+    };
+
+    _this._transformPerson = function (person) {
+      return {
+        id: _this._extractId(person),
+        name: person.name,
+        gender: person.gender,
+        birthYear: person.birth_year,
+        eyeColor: person.eye_color
+      };
+    };
     return _this;
   }
 
@@ -22978,7 +22160,7 @@ var SwapiService = exports.SwapiService = function (_React$Component) {
 
               case 2:
                 res = _context2.sent;
-                return _context2.abrupt('return', res.results.map(this._transformPersone));
+                return _context2.abrupt('return', res.results.map(this._transformPerson));
 
               case 4:
               case 'end':
@@ -23008,7 +22190,7 @@ var SwapiService = exports.SwapiService = function (_React$Component) {
 
               case 2:
                 person = _context3.sent;
-                return _context3.abrupt('return', this._transformPersone(person));
+                return _context3.abrupt('return', this._transformPerson(person));
 
               case 4:
               case 'end':
@@ -23140,62 +22322,659 @@ var SwapiService = exports.SwapiService = function (_React$Component) {
 
       return getStarship;
     }()
-  }, {
-    key: '_extractId',
-    value: function _extractId(item) {
-      var idRegExp = /\/([0-9]*)\/$/;
-      return item.url.match(idRegExp)[1];
-    }
-  }, {
-    key: '_transformPlanet',
-    value: function _transformPlanet(planet) {
-      return {
-        id: this._extractId(planet),
-        name: planet.name,
-        population: planet.population,
-        rotationPeriod: planet.rotation_period,
-        diameter: planet.diameter
-      };
-    }
-  }, {
-    key: '_trnsformaStarship',
-    value: function _trnsformaStarship(starship) {
-      return {
-        id: this._extractId(starship),
-        name: starship.name,
-        model: starship.model,
-        manufacturer: starship.manufacturer,
-        costInCredits: starship.costInCredits,
-        length: starship.length,
-        crew: starship.crew,
-        passengers: starship.passengers,
-        cargoCapacity: starship.cargoCapacity
-      };
-    }
-  }, {
-    key: '_transformPersone',
-    value: function _transformPersone(person) {
-      return {
-        id: this._extractId(person),
-        name: person.name,
-        gender: person.gender,
-        birthYear: person.birthYear,
-        eyeColor: person.eyeColor
-      };
-    }
   }]);
   return SwapiService;
 }(React.Component);
 
 /***/ }),
-/* 162 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(163);
+"use strict";
+
+// 25.4.1.5 NewPromiseCapability(C)
+var aFunction = __webpack_require__(40);
+
+function PromiseCapability(C) {
+  var resolve, reject;
+  this.promise = new C(function ($$resolve, $$reject) {
+    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+    resolve = $$resolve;
+    reject = $$reject;
+  });
+  this.resolve = aFunction(resolve);
+  this.reject = aFunction(reject);
+}
+
+module.exports.f = function (C) {
+  return new PromiseCapability(C);
+};
 
 
 /***/ }),
-/* 163 */
+/* 112 */,
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.3.20 SpeciesConstructor(O, defaultConstructor)
+var anObject = __webpack_require__(7);
+var aFunction = __webpack_require__(40);
+var SPECIES = __webpack_require__(0)('species');
+module.exports = function (O, D) {
+  var C = anObject(O).constructor;
+  var S;
+  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
+};
+
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ctx = __webpack_require__(25);
+var invoke = __webpack_require__(167);
+var html = __webpack_require__(60);
+var cel = __webpack_require__(41);
+var global = __webpack_require__(1);
+var process = global.process;
+var setTask = global.setImmediate;
+var clearTask = global.clearImmediate;
+var MessageChannel = global.MessageChannel;
+var Dispatch = global.Dispatch;
+var counter = 0;
+var queue = {};
+var ONREADYSTATECHANGE = 'onreadystatechange';
+var defer, channel, port;
+var run = function () {
+  var id = +this;
+  // eslint-disable-next-line no-prototype-builtins
+  if (queue.hasOwnProperty(id)) {
+    var fn = queue[id];
+    delete queue[id];
+    fn();
+  }
+};
+var listener = function (event) {
+  run.call(event.data);
+};
+// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
+if (!setTask || !clearTask) {
+  setTask = function setImmediate(fn) {
+    var args = [];
+    var i = 1;
+    while (arguments.length > i) args.push(arguments[i++]);
+    queue[++counter] = function () {
+      // eslint-disable-next-line no-new-func
+      invoke(typeof fn == 'function' ? fn : Function(fn), args);
+    };
+    defer(counter);
+    return counter;
+  };
+  clearTask = function clearImmediate(id) {
+    delete queue[id];
+  };
+  // Node.js 0.8-
+  if (__webpack_require__(26)(process) == 'process') {
+    defer = function (id) {
+      process.nextTick(ctx(run, id, 1));
+    };
+  // Sphere (JS game engine) Dispatch API
+  } else if (Dispatch && Dispatch.now) {
+    defer = function (id) {
+      Dispatch.now(ctx(run, id, 1));
+    };
+  // Browsers with MessageChannel, includes WebWorkers
+  } else if (MessageChannel) {
+    channel = new MessageChannel();
+    port = channel.port2;
+    channel.port1.onmessage = listener;
+    defer = ctx(port.postMessage, port, 1);
+  // Browsers with postMessage, skip WebWorkers
+  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
+  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
+    defer = function (id) {
+      global.postMessage(id + '', '*');
+    };
+    global.addEventListener('message', listener, false);
+  // IE8-
+  } else if (ONREADYSTATECHANGE in cel('script')) {
+    defer = function (id) {
+      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
+        html.removeChild(this);
+        run.call(id);
+      };
+    };
+  // Rest old browsers
+  } else {
+    defer = function (id) {
+      setTimeout(ctx(run, id, 1), 0);
+    };
+  }
+}
+module.exports = {
+  set: setTask,
+  clear: clearTask
+};
+
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return { e: false, v: exec() };
+  } catch (e) {
+    return { e: true, v: e };
+  }
+};
+
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__(7);
+var isObject = __webpack_require__(9);
+var newPromiseCapability = __webpack_require__(111);
+
+module.exports = function (C, x) {
+  anObject(C);
+  if (isObject(x) && x.constructor === C) return x;
+  var promiseCapability = newPromiseCapability.f(C);
+  var resolve = promiseCapability.resolve;
+  resolve(x);
+  return promiseCapability.promise;
+};
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Spinner = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(13);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(14);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(3);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(174);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Spinner = exports.Spinner = function (_React$Component) {
+    (0, _inherits3.default)(Spinner, _React$Component);
+
+    function Spinner() {
+        (0, _classCallCheck3.default)(this, Spinner);
+        return (0, _possibleConstructorReturn3.default)(this, (Spinner.__proto__ || Object.getPrototypeOf(Spinner)).apply(this, arguments));
+    }
+
+    (0, _createClass3.default)(Spinner, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                { className: 'lds-css' },
+                React.createElement(
+                    'div',
+                    { className: 'lds-double-ring' },
+                    React.createElement('div', null),
+                    React.createElement('div', null)
+                )
+            );
+        }
+    }]);
+    return Spinner;
+}(React.Component);
+
+/***/ }),
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(150);
+
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(151);
+
+__webpack_require__(181);
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _react = __webpack_require__(3);
+
+var React = _interopRequireWildcard(_react);
+
+var _reactDom = __webpack_require__(67);
+
+var _App = __webpack_require__(152);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+(0, _reactDom.render)(React.createElement(_App.App, null), document.querySelector('#StarDb'));
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.App = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(13);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(14);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(3);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(153);
+
+var _Header = __webpack_require__(154);
+
+var _ItemList = __webpack_require__(156);
+
+var _PersonDetails = __webpack_require__(175);
+
+var _PlanetDetails = __webpack_require__(177);
+
+var _RandomPlanet = __webpack_require__(178);
+
+var _StarshipDetails = __webpack_require__(180);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = exports.App = function (_React$Component) {
+    (0, _inherits3.default)(App, _React$Component);
+
+    function App() {
+        (0, _classCallCheck3.default)(this, App);
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+        _this.state = {
+            showRandomPlanet: true,
+            selectedPerson: 1
+        };
+        return _this;
+    }
+
+    (0, _createClass3.default)(App, [{
+        key: 'toggleRandomPlanet',
+        value: function toggleRandomPlanet() {
+            this.setState(function (state) {
+                return {
+                    showRandomPlanet: !state.showRandomPlanet
+                };
+            });
+        }
+    }, {
+        key: 'onPersonSelected',
+        value: function onPersonSelected(id) {
+            this.setState({
+                selectedPerson: id
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            var planet = this.state.showRandomPlanet ? React.createElement(_RandomPlanet.RandomPlanet, null) : null;
+
+            return React.createElement(
+                'div',
+                { className: 'Stardb-wrapper' },
+                React.createElement(_Header.Header, null),
+                planet,
+                React.createElement(
+                    'button',
+                    {
+                        className: 'toggle-planet btn',
+                        onClick: this.toggleRandomPlanet.bind(this) },
+                    'Toggle Random Planet'
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'person-content' },
+                    React.createElement(
+                        'div',
+                        { className: 'characters' },
+                        React.createElement(_ItemList.ItemList, { onItemSelected: this.onPersonSelected.bind(this) })
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'person-card' },
+                        React.createElement(_PersonDetails.PersonDetails, { personId: this.state.selectedPerson })
+                    )
+                )
+            );
+        }
+    }]);
+    return App;
+}(React.Component);
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 154 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Header = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(13);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(14);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(3);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(155);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = exports.Header = function (_React$Component) {
+    (0, _inherits3.default)(Header, _React$Component);
+
+    function Header() {
+        (0, _classCallCheck3.default)(this, Header);
+        return (0, _possibleConstructorReturn3.default)(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+    }
+
+    (0, _createClass3.default)(Header, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                { className: 'header' },
+                React.createElement(
+                    'h3',
+                    { className: 'header__title' },
+                    React.createElement(
+                        'a',
+                        { href: '#' },
+                        'Star DB'
+                    )
+                ),
+                React.createElement(
+                    'ul',
+                    { className: 'header__components' },
+                    React.createElement(
+                        'li',
+                        { className: 'header__list' },
+                        React.createElement(
+                            'a',
+                            { href: '#' },
+                            'People'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        { className: 'header__list' },
+                        React.createElement(
+                            'a',
+                            { href: '#' },
+                            'Planets'
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        { className: 'header__list' },
+                        React.createElement(
+                            'a',
+                            { href: '#' },
+                            'Starships'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+    return Header;
+}(React.Component);
+
+/***/ }),
+/* 155 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ItemList = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(13);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(14);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(3);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(157);
+
+var _swapiService = __webpack_require__(110);
+
+var _spinner = __webpack_require__(117);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ItemList = exports.ItemList = function (_React$Component) {
+    (0, _inherits3.default)(ItemList, _React$Component);
+
+    function ItemList() {
+        (0, _classCallCheck3.default)(this, ItemList);
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (ItemList.__proto__ || Object.getPrototypeOf(ItemList)).call(this));
+
+        _this.state = {
+            peopleList: null
+        };
+
+        _this.swapiService = new _swapiService.SwapiService();
+        return _this;
+    }
+
+    (0, _createClass3.default)(ItemList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.swapiService.getAllPeople().then(function (peopleList) {
+                _this2.setState({
+                    peopleList: peopleList
+                });
+            });
+        }
+    }, {
+        key: 'renderItems',
+        value: function renderItems(arr) {
+            var _this3 = this;
+
+            return arr.map(function (_ref) {
+                var id = _ref.id,
+                    name = _ref.name;
+
+                return React.createElement(
+                    'li',
+                    { className: 'characters-list__group',
+                        key: id,
+                        onClick: function onClick() {
+                            return _this3.props.onItemSelected(id);
+                        } },
+                    name
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var peopleList = this.state.peopleList;
+
+
+            if (!peopleList) {
+                return React.createElement(_spinner.Spinner, null);
+            }
+
+            var items = this.renderItems(peopleList);
+
+            return React.createElement(
+                'ul',
+                { className: 'characters-list' },
+                items
+            );
+        }
+    }]);
+    return ItemList;
+}(React.Component);
+
+/***/ }),
+/* 157 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(159);
+
+
+/***/ }),
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -23220,7 +22999,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(164);
+module.exports = __webpack_require__(160);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -23236,7 +23015,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 164 */
+/* 160 */
 /***/ (function(module, exports) {
 
 /**
@@ -23969,7 +23748,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 165 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23977,7 +23756,7 @@ if (hadRuntime) {
 
 exports.__esModule = true;
 
-var _promise = __webpack_require__(166);
+var _promise = __webpack_require__(162);
 
 var _promise2 = _interopRequireDefault(_promise);
 
@@ -24013,26 +23792,26 @@ exports.default = function (fn) {
 };
 
 /***/ }),
-/* 166 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(167), __esModule: true };
+module.exports = { "default": __webpack_require__(163), __esModule: true };
 
 /***/ }),
-/* 167 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(63);
 __webpack_require__(53);
 __webpack_require__(62);
-__webpack_require__(168);
-__webpack_require__(176);
-__webpack_require__(177);
+__webpack_require__(164);
+__webpack_require__(172);
+__webpack_require__(173);
 module.exports = __webpack_require__(2).Promise;
 
 
 /***/ }),
-/* 168 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24044,15 +23823,15 @@ var classof = __webpack_require__(61);
 var $export = __webpack_require__(6);
 var isObject = __webpack_require__(9);
 var aFunction = __webpack_require__(40);
-var anInstance = __webpack_require__(169);
-var forOf = __webpack_require__(170);
-var speciesConstructor = __webpack_require__(112);
-var task = __webpack_require__(113).set;
-var microtask = __webpack_require__(172)();
-var newPromiseCapabilityModule = __webpack_require__(110);
-var perform = __webpack_require__(114);
-var userAgent = __webpack_require__(173);
-var promiseResolve = __webpack_require__(115);
+var anInstance = __webpack_require__(165);
+var forOf = __webpack_require__(166);
+var speciesConstructor = __webpack_require__(113);
+var task = __webpack_require__(114).set;
+var microtask = __webpack_require__(168)();
+var newPromiseCapabilityModule = __webpack_require__(111);
+var perform = __webpack_require__(115);
+var userAgent = __webpack_require__(169);
+var promiseResolve = __webpack_require__(116);
 var PROMISE = 'Promise';
 var TypeError = global.TypeError;
 var process = global.process;
@@ -24227,7 +24006,7 @@ if (!USE_NATIVE) {
     this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
     this._n = false;          // <- notify
   };
-  Internal.prototype = __webpack_require__(174)($Promise.prototype, {
+  Internal.prototype = __webpack_require__(170)($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
     then: function then(onFulfilled, onRejected) {
       var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
@@ -24259,7 +24038,7 @@ if (!USE_NATIVE) {
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
 __webpack_require__(30)($Promise, PROMISE);
-__webpack_require__(175)(PROMISE);
+__webpack_require__(171)(PROMISE);
 Wrapper = __webpack_require__(2)[PROMISE];
 
 // statics
@@ -24325,7 +24104,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(85)(function
 
 
 /***/ }),
-/* 169 */
+/* 165 */
 /***/ (function(module, exports) {
 
 module.exports = function (it, Constructor, name, forbiddenField) {
@@ -24336,7 +24115,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 
 
 /***/ }),
-/* 170 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(25);
@@ -24367,7 +24146,7 @@ exports.RETURN = RETURN;
 
 
 /***/ }),
-/* 171 */
+/* 167 */
 /***/ (function(module, exports) {
 
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -24389,11 +24168,11 @@ module.exports = function (fn, args, that) {
 
 
 /***/ }),
-/* 172 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(1);
-var macrotask = __webpack_require__(113).set;
+var macrotask = __webpack_require__(114).set;
 var Observer = global.MutationObserver || global.WebKitMutationObserver;
 var process = global.process;
 var Promise = global.Promise;
@@ -24464,7 +24243,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 173 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(1);
@@ -24474,7 +24253,7 @@ module.exports = navigator && navigator.userAgent || '';
 
 
 /***/ }),
-/* 174 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hide = __webpack_require__(15);
@@ -24487,7 +24266,7 @@ module.exports = function (target, src, safe) {
 
 
 /***/ }),
-/* 175 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24508,7 +24287,7 @@ module.exports = function (KEY) {
 
 
 /***/ }),
-/* 176 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24517,8 +24296,8 @@ module.exports = function (KEY) {
 var $export = __webpack_require__(6);
 var core = __webpack_require__(2);
 var global = __webpack_require__(1);
-var speciesConstructor = __webpack_require__(112);
-var promiseResolve = __webpack_require__(115);
+var speciesConstructor = __webpack_require__(113);
+var promiseResolve = __webpack_require__(116);
 
 $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
   var C = speciesConstructor(this, core.Promise || global.Promise);
@@ -24535,15 +24314,15 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
 
 
 /***/ }),
-/* 177 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://github.com/tc39/proposal-promise-try
 var $export = __webpack_require__(6);
-var newPromiseCapability = __webpack_require__(110);
-var perform = __webpack_require__(114);
+var newPromiseCapability = __webpack_require__(111);
+var perform = __webpack_require__(115);
 
 $export($export.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = newPromiseCapability.f(this);
@@ -24551,6 +24330,200 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
   (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
   return promiseCapability.promise;
 } });
+
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PersonDetails = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(13);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(14);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(3);
+
+var React = _interopRequireWildcard(_react);
+
+__webpack_require__(176);
+
+var _swapiService = __webpack_require__(110);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PersonDetails = exports.PersonDetails = function (_React$Component) {
+    (0, _inherits3.default)(PersonDetails, _React$Component);
+
+    function PersonDetails() {
+        (0, _classCallCheck3.default)(this, PersonDetails);
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (PersonDetails.__proto__ || Object.getPrototypeOf(PersonDetails)).call(this));
+
+        _this.state = {
+            person: 1
+        };
+        _this.swapiService = new _swapiService.SwapiService();
+        return _this;
+    }
+
+    (0, _createClass3.default)(PersonDetails, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.updatePerson();
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (this.props.personId !== prevProps.personId) {
+                this.updatePerson();
+            }
+        }
+    }, {
+        key: 'updatePerson',
+        value: function updatePerson() {
+            var _this2 = this;
+
+            var personId = this.props.personId;
+
+            if (!personId) {
+                return;
+            }
+
+            this.swapiService.getPerson(personId).then(function (person) {
+                _this2.setState({ person: person });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            if (!this.state.person) {
+                return React.createElement(
+                    'div',
+                    null,
+                    'Select a person from a list'
+                );
+            }
+
+            var _state$person = this.state.person,
+                id = _state$person.id,
+                name = _state$person.name,
+                gender = _state$person.gender,
+                birthYear = _state$person.birthYear,
+                eyeColor = _state$person.eyeColor;
+
+
+            return React.createElement(
+                'div',
+                { className: 'person-card-wrapper' },
+                React.createElement('img', { className: 'person-image',
+                    src: 'https://starwars-visualguide.com/assets/img/characters/' + id + '.jpg' }),
+                React.createElement(
+                    'div',
+                    { className: 'card-body' },
+                    React.createElement(
+                        'h4',
+                        null,
+                        name,
+                        '  '
+                    ),
+                    React.createElement(
+                        'ul',
+                        { className: 'person-specifications' },
+                        React.createElement(
+                            'li',
+                            { className: 'person-specifications__list' },
+                            React.createElement(
+                                'div',
+                                { className: 'person-specifications__list-item' },
+                                'Gender:'
+                            ),
+                            React.createElement(
+                                'div',
+                                null,
+                                gender
+                            )
+                        ),
+                        React.createElement(
+                            'li',
+                            { className: 'person-specifications__list' },
+                            React.createElement(
+                                'div',
+                                { className: 'person-specifications__list-item' },
+                                'Birth Year:'
+                            ),
+                            React.createElement(
+                                'div',
+                                null,
+                                birthYear
+                            )
+                        ),
+                        React.createElement(
+                            'li',
+                            { className: 'person-specifications__list' },
+                            React.createElement(
+                                'div',
+                                { className: 'person-specifications__list-item' },
+                                'Eye Color:'
+                            ),
+                            React.createElement(
+                                'div',
+                                null,
+                                eyeColor
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+    return PersonDetails;
+}(React.Component);
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// import * as React from 'react';
+// import './PlanetDetails.scss';
+//
+// export class PlanetDetails extends React.Component{
+//
+// }
 
 
 /***/ }),
@@ -24563,7 +24536,7 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Spinner = undefined;
+exports.RandomPlanet = undefined;
 
 var _classCallCheck2 = __webpack_require__(11);
 
@@ -24587,35 +24560,151 @@ var React = _interopRequireWildcard(_react);
 
 __webpack_require__(179);
 
+var _swapiService = __webpack_require__(110);
+
+var _spinner = __webpack_require__(117);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Spinner = exports.Spinner = function (_React$Component) {
-    (0, _inherits3.default)(Spinner, _React$Component);
+var RandomPlanet = exports.RandomPlanet = function (_React$Component) {
+    (0, _inherits3.default)(RandomPlanet, _React$Component);
 
-    function Spinner() {
-        (0, _classCallCheck3.default)(this, Spinner);
-        return (0, _possibleConstructorReturn3.default)(this, (Spinner.__proto__ || Object.getPrototypeOf(Spinner)).apply(this, arguments));
+    function RandomPlanet() {
+        (0, _classCallCheck3.default)(this, RandomPlanet);
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (RandomPlanet.__proto__ || Object.getPrototypeOf(RandomPlanet)).call(this));
+
+        _this.state = {
+            id: null,
+            name: null,
+            population: null,
+            rotationPeriod: null,
+            diameter: null,
+            loading: true
+        };
+
+        _this.swapiService = new _swapiService.SwapiService();
+
+        _this.updatePlanet = function () {
+            var id = Math.floor(Math.random() * 25) + 3;
+            _this.swapiService.getPlanet(id).then(function (planet) {
+                _this.setState({
+                    id: id,
+                    name: planet.name,
+                    population: planet.population,
+                    rotationPeriod: planet.rotationPeriod,
+                    diameter: planet.diameter,
+                    loading: false
+                });
+            });
+        };
+        return _this;
     }
 
-    (0, _createClass3.default)(Spinner, [{
+    (0, _createClass3.default)(RandomPlanet, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.updatePlanet();
+            this.interval = setInterval(this.updatePlanet, 10000);
+            // clearInterval(this.interval);
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var loading = this.state.loading;
+
+
+            var spinner = loading ? React.createElement(_spinner.Spinner, null) : null;
+            var content = !loading ? React.createElement(PlanetView, { planet: this.state }) : null;
+
             return React.createElement(
                 'div',
-                { className: 'lds-css' },
-                React.createElement(
-                    'div',
-                    { className: 'lds-double-ring' },
-                    React.createElement('div', null),
-                    React.createElement('div', null)
-                )
+                { className: 'random-planet-wrapper' },
+                spinner,
+                content
             );
         }
     }]);
-    return Spinner;
+    return RandomPlanet;
 }(React.Component);
+
+var PlanetView = function PlanetView(_ref) {
+    var planet = _ref.planet;
+    var id = planet.id,
+        name = planet.name,
+        population = planet.population,
+        rotationPeriod = planet.rotationPeriod,
+        diameter = planet.diameter;
+
+
+    return React.createElement(
+        React.Fragment,
+        null,
+        React.createElement(
+            'div',
+            { className: 'random-planet' },
+            React.createElement('img', { className: 'planet-image',
+                src: 'https://starwars-visualguide.com/assets/img/planets/' + id + '.jpg' }),
+            React.createElement(
+                'div',
+                { className: 'planet-param' },
+                React.createElement(
+                    'div',
+                    null,
+                    name
+                ),
+                React.createElement(
+                    'ul',
+                    { className: 'planet-list' },
+                    React.createElement(
+                        'li',
+                        { className: 'planet-list__item' },
+                        React.createElement(
+                            'div',
+                            { className: 'planet-list__item-info' },
+                            'Population:'
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            population
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        { className: 'planet-list__item' },
+                        React.createElement(
+                            'div',
+                            { className: 'planet-list__item-info' },
+                            'Rotation Period:'
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            rotationPeriod
+                        )
+                    ),
+                    React.createElement(
+                        'li',
+                        { className: 'planet-list__item' },
+                        React.createElement(
+                            'div',
+                            { className: 'planet-list__item-info' },
+                            'Diameter:'
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            diameter
+                        )
+                    )
+                )
+            )
+        )
+    );
+};
 
 /***/ }),
 /* 179 */
