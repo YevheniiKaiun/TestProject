@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './PersonDetails.scss';
 import {SwapiService} from "../../services/swapi-service.jsx";
+import {ErrorButton} from "../error-button/error-button.jsx";
 
 export class PersonDetails extends React.Component{
     constructor() {
@@ -47,8 +48,8 @@ export class PersonDetails extends React.Component{
         return (
             <div className='person-card-wrapper'>
                 <img className="person-image"
-                     src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} />
-
+                     src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
+                     alt="character"/>
                 <div className="card-body">
                     <h4>{name}  </h4>
                     <ul className="person-specifications">
@@ -66,6 +67,7 @@ export class PersonDetails extends React.Component{
                         </li>
                     </ul>
                 </div>
+                <ErrorButton/>
             </div>
         )
     }

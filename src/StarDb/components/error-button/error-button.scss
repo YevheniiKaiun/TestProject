@@ -1,0 +1,19 @@
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import '../../../common/styles/grid.scss';
+@import '../../../common/styles/base.scss';
+@import '../../../common/styles/mixins.scss';
+@import '../../../common/styles/variables.scss';
+
+.error-button {
+  width: 150px;
+  height: 40px;
+  margin: 16px;
+  background-color: #ff0007;
+  color: #FFF;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  @include mobile {
+    margin: 10px;
+  }
+}

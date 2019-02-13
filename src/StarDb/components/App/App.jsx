@@ -6,13 +6,16 @@ import { PersonDetails } from "../PersonDetails/PersonDetails.jsx";
 import { PlanetDetails } from "../PlanetDetails/PlanetDetails.jsx";
 import { RandomPlanet } from "../RandomPlanet/RandomPlanet.jsx";
 import { StarshipDetails } from "../StarshipDetails/StarshipDetails.jsx";
+import { ErrorButton } from "../error-button/error-button.jsx";
+import {PeoplePage} from "../people-page/people-page.jsx";
+import {ErrorIndicator} from "../error-indicator/error-indicator.jsx";
 
 export class App extends React.Component{
     constructor() {
         super();
         this.state = {
             showRandomPlanet: true,
-            selectedPerson: 1
+            hasError:false
         };
     }
 
@@ -24,13 +27,16 @@ export class App extends React.Component{
         });
     };
 
-    onPersonSelected(id) {
-        this.setState({
-            selectedPerson: id
-        });
+    componentDidCatch() {
+        console.log('componentDidCatch()');
+        this.setState({hasError:true})
     }
 
     render() {
+
+        if(this.state.hasError) {
+            return <ErrorIndicator/>
+        }
 
         const planet = this.state.showRandomPlanet ? <RandomPlanet/> : null;
 
@@ -44,15 +50,11 @@ export class App extends React.Component{
                     onClick={this.toggleRandomPlanet.bind(this)}>
                     Toggle Random Planet
                 </button>
+                <ErrorButton/>
 
-                <div className='person-content'>
-                    <div className='characters'>
-                        <ItemList onItemSelected={this.onPersonSelected.bind(this)}/>
-                    </div>
-                    <div className='person-card'>
-                        <PersonDetails personId={this.state.selectedPerson}/>
-                    </div>
-                </div>
+                <PeoplePage/>
+                <PeoplePage/>
+                <PeoplePage/>
             </div>
         )
     }

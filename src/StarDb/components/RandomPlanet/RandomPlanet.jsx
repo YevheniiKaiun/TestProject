@@ -2,17 +2,14 @@ import * as React from 'react';
 import './RandomPlanet.scss';
 import { SwapiService } from "../../services/swapi-service.jsx";
 import { Spinner } from "../spinner/spinner.jsx";
+import {ErrorIndicator} from "../error-indicator/error-indicator.jsx";
 
 
 export class RandomPlanet extends React.Component{
     constructor(){
         super();
         this.state = {
-            id: null,
-            name: null,
-            population: null,
-            rotationPeriod: null,
-            diameter: null,
+            planet: {},
             loading: true
         };
 
@@ -20,39 +17,51 @@ export class RandomPlanet extends React.Component{
 
         this.updatePlanet =  () => {
             const id = Math.floor(Math.random()*25) + 3;
+
             this.swapiService
                 .getPlanet(id)
-                .then((planet) => {
-                    this.setState({
-                        id,
-                        name: planet.name,
-                        population: planet.population,
-                        rotationPeriod: planet.rotationPeriod,
-                        diameter: planet.diameter,
-                        loading:false,
-                    })
-                })
+                .then(this.onPlanetLoaded)
+                .catch(this.onError);
 
+        };
+        this.onError = (err) => {
+            this.setState({
+                error: true,
+                loading: false
+            });
+        };
+        this.onPlanetLoaded = (planet) =>{
+            this.setState({
+                planet,
+                loading:false,
+                error:false
+            });
         };
     }
 
     componentDidMount() {
         this.updatePlanet();
         this.interval = setInterval(this.updatePlanet, 10000);
-        // clearInterval(this.interval);
+        clearInterval(this.interval);
     }
 
+    componentWillMount() {
+        clearInterval(this.interval);
+    }
 
 
     render() {
 
-        const { loading } = this.state;
+        const {planet, loading, error } = this.state;
 
+        const hasData = !(loading || error);
+        const errorMessage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !loading ? <PlanetView planet={this.state}/> : null;
+        const content = hasData ? <PlanetView planet={planet}/> : null;
 
         return (
             <div className="random-planet-wrapper">
+                {errorMessage}
                 {spinner}
                 {content}
             </div>
@@ -70,7 +79,8 @@ const PlanetView = ({ planet }) => {
         <React.Fragment>
             <div className="random-planet">
                 <img className="planet-image"
-                     src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
+                     src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+                     alt="planet"/>
                 <div className='planet-param'>
                     <div>{name}</div>
                     <ul className="planet-list">
