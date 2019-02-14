@@ -447,8 +447,8 @@ body {
       padding: 10px; } }
 
 .toggle-planet {
-  width: 150px;
-  height: 40px;
+  width: 165px;
+  height: 30px;
   margin: 16px;
   background-color: #ff9100;
   color: #FFF;
@@ -958,9 +958,7 @@ a {
   color: #FFF;
   background-color: #303030;
   border-radius: 10px;
-  padding: 10px;
-  -ms-flex-direction: column;
-      flex-direction: column; }
+  padding: 16px; }
 
 .person-image {
   width: 30%;
@@ -969,7 +967,7 @@ a {
   margin-right: 16px; }
 
 .person-specifications {
-  margin: 1rem 0 0 1rem; }
+  margin: 1rem 0 0 0; }
   .person-specifications__list {
     display: -ms-flexbox;
     display: flex;
@@ -983,6 +981,9 @@ a {
 
 .card-body {
   width: 100%; }
+
+.select-text {
+  color: #FFF; }
 .grid-container {
   display: -ms-flexbox;
   display: flex;
@@ -1389,17 +1390,13 @@ a {
   text-decoration: none; }
 
 .error-button {
-  width: 150px;
-  height: 40px;
-  margin: 16px;
+  width: 130px;
+  height: 30px;
   background-color: #ff0007;
   color: #FFF;
   border-radius: 5px;
   border: none;
   cursor: pointer; }
-  @media (max-width: 719.9px) {
-    .error-button {
-      margin: 10px; } }
 .grid-container {
   display: -ms-flexbox;
   display: flex;

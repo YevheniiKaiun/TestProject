@@ -40,49 +40,51 @@ export  class SwapiService extends React.Component{
         birthYear: person.birth_year,
         eyeColor: person.eye_color
       }
+    };
+
+    this.getResource = async (url) => {
+      const res = await fetch(`${this.apiBase}${url}`);
+
+      if (!res.ok) {
+        throw new Error(`Could not fetch ${url}` +
+            `, received ${res.status}`)
+      }
+      return await res.json();
+    };
+
+    this.getAllPeople = async () => {
+      const res = await this.getResource(`/people/`);
+      return res.results.map(this._transformPerson);
+    };
+
+    this.getPerson = async (id) => {
+      const person = await this.getResource(`/people/${id}/`);
+      return this._transformPerson(person);
+    };
+
+    this.getAllPlanets = async () => {
+      const res = await this.getResource(`/planets/`);
+      return res.results.map(this._transformPlanet);
+    };
+
+    this.getPlanet = async (id) => {
+      const planet = await this.getResource(`/planets/${id}/`);
+      return this._transformPlanet(planet);
+    };
+
+    this.getAllStarships = async () => {
+      const res = await this.getResource(`/starships/`);
+      return res.results.map(this._trnsformaStarship);
+    };
+
+    this.getStarship = async (id) => {
+      const starship =  this.getResource(`/starships/${id}/`);
+      return this._trnsformaStarship(starship);
     }
   };
 
 
-  async getResource(url) {
-    const res = await fetch(`${this.apiBase}${url}`);
 
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}` +
-        `, received ${res.status}`)
-    }
-    return await res.json();
-  }
-
-  async getAllPeople() {
-    const res = await this.getResource(`/people/`);
-    return res.results.map(this._transformPerson);
-  }
-
-  async getPerson(id) {
-    const person = await this.getResource(`/people/${id}/`);
-    return this._transformPerson(person);
-  }
-
-  async getAllPlanets() {
-    const res = await this.getResource(`/planets/`);
-    return res.results.map(this._transformPlanet);
-  }
-
-  async getPlanet(id) {
-    const planet = await this.getResource(`/planets/${id}/`);
-    return this._transformPlanet(planet);
-  }
-
-  async getAllStarships() {
-    const res = await this.getResource(`/starships/`);
-    return res.results.map(this._trnsformaStarship);
-  }
-
-  async getStarship(id) {
-    const starship =  this.getResource(`/starships/${id}/`);
-    return this._trnsformaStarship(starship);
-  }
 
 
 

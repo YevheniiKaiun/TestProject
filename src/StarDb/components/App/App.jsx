@@ -9,6 +9,7 @@ import { StarshipDetails } from "../StarshipDetails/StarshipDetails.jsx";
 import { ErrorButton } from "../error-button/error-button.jsx";
 import {PeoplePage} from "../people-page/people-page.jsx";
 import {ErrorIndicator} from "../error-indicator/error-indicator.jsx";
+import {SwapiService} from "../../services/swapi-service.jsx";
 
 export class App extends React.Component{
     constructor() {
@@ -17,6 +18,7 @@ export class App extends React.Component{
             showRandomPlanet: true,
             hasError:false
         };
+        this.swapiService = new SwapiService();
     }
 
     toggleRandomPlanet() {
@@ -53,8 +55,28 @@ export class App extends React.Component{
                 <ErrorButton/>
 
                 <PeoplePage/>
-                <PeoplePage/>
-                <PeoplePage/>
+
+                <div className='person-content'>
+                    <div className='characters'>
+                        <ItemList onItemSelected={this.onPersonSelected}
+                                  getData={this.swapiService.getAllPlanets}
+                                  renderItem={(item) => item.name}/>
+                    </div>
+                    <div className='person-card'>
+                        <PersonDetails personId={this.state.selectedPerson}/>
+                    </div>
+                </div>
+
+                <div className='person-content'>
+                    <div className='characters'>
+                        <ItemList onItemSelected={this.onPersonSelected}
+                                  getData={this.swapiService.getAllStarships}
+                                  renderItem={(item) => item.name}/>
+                    </div>
+                    <div className='person-card'>
+                        <PersonDetails personId={this.state.selectedPerson}/>
+                    </div>
+                </div>
             </div>
         )
     }

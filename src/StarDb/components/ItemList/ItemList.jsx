@@ -7,29 +7,34 @@ export class ItemList extends React.Component{
     constructor() {
         super();
         this.state = {
-            peopleList: null
+            itemList: null
         };
 
-        this.swapiService = new SwapiService();
+
     }
 
     componentDidMount() {
-        this.swapiService
-            .getAllPeople()
-            .then((peopleList) => {
+
+        const { getData } = this.props;
+
+        getData()
+            .then((itemList) => {
                 this.setState({
-                    peopleList
+                    itemList
                 })
             })
     }
 
     renderItems(arr) {
-        return arr.map(({id, name}) => {
+        return arr.map((item) => {
+
+            const { id } = item;
+            const label = this.props.renderItem(item);
             return (
                 <li className="characters-list__group"
                     key={id}
                     onClick={() => this.props.onItemSelected(id)}>
-                    {name}
+                    {label}
                 </li>
             )
         })
@@ -37,13 +42,13 @@ export class ItemList extends React.Component{
 
     render() {
 
-        const {peopleList} = this.state;
+        const {itemList} = this.state;
 
-        if (!peopleList) {
+        if (!itemList) {
             return <Spinner/>;
         }
 
-        const items = this.renderItems(peopleList);
+        const items = this.renderItems(itemList);
 
         return (
             <ul className="characters-list">

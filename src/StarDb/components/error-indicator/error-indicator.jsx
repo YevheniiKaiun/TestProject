@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './error-indicator.scss';
-import icon from './death-star.png';
+import icon from '../../../../assets/deathstar.png';
 export class ErrorIndicator  extends React.Component{
 
     render() {

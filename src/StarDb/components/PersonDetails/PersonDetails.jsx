@@ -7,7 +7,7 @@ export class PersonDetails extends React.Component{
     constructor() {
         super();
         this.state = {
-            person:1
+            person:null
         };
         this.swapiService = new SwapiService();
     };
@@ -39,7 +39,7 @@ export class PersonDetails extends React.Component{
     render() {
 
         if (!this.state.person) {
-            return <div>Select a person from a list</div>;
+            return <div className='select-text'>Select a person from a list</div>;
         }
 
         const { id, name, gender,
@@ -66,8 +66,8 @@ export class PersonDetails extends React.Component{
                             <div>{eyeColor}</div>
                         </li>
                     </ul>
+                    <ErrorButton/>
                 </div>
-                <ErrorButton/>
             </div>
         )
     }
